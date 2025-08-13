@@ -64,15 +64,15 @@ class WorkshopState extends ChangeNotifier {
       GPanel(
         heightWeight: 0.7,
         valueAxes: [
-          GValueAxis(
-            viewPortId: kVpVolume,
-            position: GAxisPosition.start,
-            scaleMode: GAxisScaleMode.none,
-          ),
+          // GValueAxis(
+          //   viewPortId: kVpVolume,
+          //   position: GAxisPosition.end,
+          //   scaleMode: GAxisScaleMode.none,
+          // ),
           GValueAxis(viewPortId: kVpPrice, position: GAxisPosition.end),
         ],
         pointAxes: [
-          GPointAxis(position: GAxisPosition.start),
+          // GPointAxis(position: GAxisPosition.start),
           GPointAxis(position: GAxisPosition.end),
         ],
         valueViewPorts: [
