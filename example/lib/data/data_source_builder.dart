@@ -1,4 +1,5 @@
 import 'package:financial_chart/financial_chart.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'indicator_providers.dart';
 import 'models.dart';
@@ -239,6 +240,7 @@ Future<GDataSource<int, GData<int>>> createDataSource({
       required int toPointValueExclusive,
       required int pointCount,
     }) async {
+      debugPrint('$toPointExclusive >>> $toPointValueExclusive >>> $pointCount');
       final loaded = await ohlcDataInput.loadPrior(
         pointCount,
         toPointValueExclusive,
@@ -265,6 +267,7 @@ Future<GDataSource<int, GData<int>>> createDataSource({
       required int fromPointValueExclusive,
       required int pointCount,
     }) async {
+      debugPrint('$fromPointExclusive >>> $fromPointValueExclusive >>> $pointCount');
       final loaded = await ohlcDataInput.loadAfter(
         pointCount,
         fromPointValueExclusive,
