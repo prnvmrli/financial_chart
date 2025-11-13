@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'demos/basic.dart';
 import 'demos/dynamic_data.dart';
 import 'demos/live.dart';
+import 'demos/sync_viewport.dart';
 import 'workshop/workshop.dart';
 
 final ValueNotifier<ThemeMode> themeMode = ValueNotifier(ThemeMode.light);
 
 final routes = {
-  '/demo':
-      (context) => const MenuPage(pathPrefix: '/demo', title: "Chart demos"),
+  '/demo': (context) =>
+      const MenuPage(pathPrefix: '/demo', title: "Chart demos"),
   '/demo/basic': (context) => const BasicDemoPage(),
   '/demo/workshop': (context) => WorkshopApp(themeMode: themeMode),
   // '/demo/axes': (context) => const DemoAxesPage(),
@@ -30,9 +31,12 @@ final routes = {
   // '/demo/markers': (context) => const DemoMarkersPage(),
   '/demo/loading_data': (context) => const DemoDynamicDataPage(),
   '/demo/live_update': (context) => const DemoLiveUpdatePage(),
+  '/demo/multiple_charts': (context) => const SyncDemoPage(),
   // '/demo/testing': (context) => const PlayApp(),
   // '/demo/test_data_loader': (context) => const ChartDataLoadDemoPage(),
 };
+
+final initialRoute = '/demo';
 
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -62,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             //showPerformanceOverlay: true,
             scrollBehavior: CustomScrollBehavior(),
             routes: routes,
-            initialRoute: '/demo',
+            initialRoute: initialRoute,
             theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
             themeMode: mode,
@@ -97,46 +101,42 @@ class MenuPage extends StatelessWidget {
         title: Text(title ?? pathPrefix.split('/').last.replaceAll("_", " ")),
       ),
       body: ListView(
-        children:
-            pages
-                .map(
-                  (path) => Container(
-                    key: Key(path),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                      vertical: 2,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, path);
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
+        children: pages
+            .map(
+              (path) => Container(
+                key: Key(path),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, path);
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            path.split('/').last[0].toUpperCase() +
+                                path
+                                    .split('/')
+                                    .last
+                                    .substring(1)
+                                    .replaceAll("_", " "),
+                            style: Theme.of(context).textTheme.titleMedium!,
                           ),
-                          child: Row(
-                            children: [
-                              Text(
-                                path.split('/').last[0].toUpperCase() +
-                                    path
-                                        .split('/')
-                                        .last
-                                        .substring(1)
-                                        .replaceAll("_", " "),
-                                style: Theme.of(context).textTheme.titleMedium!,
-                              ),
-                              Expanded(child: Container()),
-                              const Icon(Icons.keyboard_arrow_right),
-                            ],
-                          ),
-                        ),
+                          Expanded(child: Container()),
+                          const Icon(Icons.keyboard_arrow_right),
+                        ],
                       ),
                     ),
                   ),
-                )
-                .toList(),
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }

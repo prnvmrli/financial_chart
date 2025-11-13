@@ -18,13 +18,21 @@ class GGraphBarRender extends GGraphRender<GGraphBar, GGraphBarTheme> {
   }) {
     final dataSource = chart.dataSource;
     final barWidth = pointViewPort.pointSize(area.width) * theme.barWidthRatio;
-    final baseValue = min(
-      max(
-        graph.baseValue ?? valueViewPort.startValue,
-        valueViewPort.startValue,
-      ),
-      valueViewPort.endValue,
-    );
+
+    // Calculate base value
+    double baseValue;
+    if (graph.baseValue != null) {
+      baseValue = min(
+        max(graph.baseValue!, valueViewPort.startValue),
+        valueViewPort.endValue,
+      );
+    } else {
+      // Use basePosition to calculate the base value
+      final valueRange = valueViewPort.endValue - valueViewPort.startValue;
+      baseValue =
+          valueViewPort.startValue + (valueRange * (1.0 - graph.basePosition));
+    }
+
     double barBottom = valueViewPort.valueToPosition(area, baseValue);
     _hitTestRectangles.clear();
     final List<Vector2> highlightMarks = <Vector2>[];
@@ -154,11 +162,10 @@ class GGraphBarRender extends GGraphRender<GGraphBar, GGraphBarTheme> {
     }
     // draw the rectangles
     if (fillPoints.isNotEmpty) {
-      Paint fillAbovePaint =
-          Paint()
-            ..color = barStyle.fillColor ?? const Color.fromARGB(0, 0, 0, 0)
-            ..style = PaintingStyle.fill
-            ..strokeWidth = barWidth;
+      Paint fillAbovePaint = Paint()
+        ..color = barStyle.fillColor ?? const Color.fromARGB(0, 0, 0, 0)
+        ..style = PaintingStyle.fill
+        ..strokeWidth = barWidth;
       canvas.drawRawPoints(
         PointMode.lines,
         Float32List.fromList(fillPoints),
@@ -167,14 +174,13 @@ class GGraphBarRender extends GGraphRender<GGraphBar, GGraphBarTheme> {
     }
     // draw the rectangle borders
     if (borderPoints.isNotEmpty) {
-      Paint borderAbovePaint =
-          Paint()
-            ..color =
-                (barStyle.strokeColor ??
-                    barStyle.fillColor ??
-                    const Color.fromARGB(0, 0, 0, 0))
-            ..strokeWidth = min(max(1.0, barStyle.strokeWidth ?? 0), barWidth)
-            ..strokeCap = barStyle.strokeCap ?? StrokeCap.round;
+      Paint borderAbovePaint = Paint()
+        ..color =
+            (barStyle.strokeColor ??
+            barStyle.fillColor ??
+            const Color.fromARGB(0, 0, 0, 0))
+        ..strokeWidth = min(max(1.0, barStyle.strokeWidth ?? 0), barWidth)
+        ..strokeCap = barStyle.strokeCap ?? StrokeCap.round;
       canvas.drawRawPoints(
         PointMode.lines,
         Float32List.fromList(borderPoints),

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/painting.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../style/dash_path.dart';
 import '../style/label_style.dart';
@@ -60,10 +61,9 @@ class GRenderUtil {
     bool strokeOnly = false,
   }) {
     if (!strokeOnly) {
-      final fillBounds =
-          (style.fillGradient == null)
-              ? null
-              : (gradientBounds ?? style.gradientBounds ?? path.getBounds());
+      final fillBounds = (style.fillGradient == null)
+          ? null
+          : (gradientBounds ?? style.gradientBounds ?? path.getBounds());
       final fillPaint = style.getFillPaint(gradientBounds: fillBounds);
       if (fillPaint != null) {
         canvas.drawPath(path, fillPaint);
@@ -71,10 +71,9 @@ class GRenderUtil {
     }
 
     if (!fillOnly) {
-      final strokeBounds =
-          (style.strokeGradient == null)
-              ? null
-              : (gradientBounds ?? style.gradientBounds ?? path.getBounds());
+      final strokeBounds = (style.strokeGradient == null)
+          ? null
+          : (gradientBounds ?? style.gradientBounds ?? path.getBounds());
       final strokePaint = style.getStrokePaint(gradientBounds: strokeBounds);
       if (strokePaint != null) {
         Path? theDashPath;
@@ -98,10 +97,9 @@ class GRenderUtil {
     required LabelStyle style,
   }) {
     final painter = TextPainter(
-      text:
-          style.textStyle != null
-              ? TextSpan(text: text, style: style.textStyle)
-              : style.span!(text),
+      text: style.textStyle != null
+          ? TextSpan(text: text, style: style.textStyle)
+          : style.span!(text),
       textAlign: style.textAlign ?? TextAlign.start,
       textDirection: style.textDirection ?? TextDirection.ltr,
       textScaler: style.textScaler ?? TextScaler.noScaling,
@@ -219,6 +217,31 @@ class GRenderUtil {
     );
   }
 
+  static Rect drawSvg({
+    required PictureInfo pictureInfo,
+    required Offset anchor,
+    Alignment alignment = Alignment.center,
+    Size? size,
+    required Canvas canvas,
+  }) {
+    final drawSize = size ?? pictureInfo.size;
+    final rect = GRenderUtil.rectFromAnchorAndAlignment(
+      anchor: anchor,
+      width: drawSize.width,
+      height: drawSize.height,
+      alignment: alignment,
+    );
+    canvas.save();
+    canvas.translate(rect.left, rect.top);
+    canvas.scale(
+      drawSize.width / pictureInfo.size.width,
+      drawSize.height / pictureInfo.size.height,
+    );
+    canvas.drawPicture(pictureInfo.picture);
+    canvas.restore();
+    return rect;
+  }
+
   static Offset getTextBlockPaintPoint(
     Offset axis,
     double width,
@@ -233,11 +256,157 @@ class GRenderUtil {
     required double y1,
     required double x2,
     required double y2,
+    Rect? area,
+    bool startRay = false,
+    bool endRay = false,
+    List<double>? resultPathPoints,
   }) {
+    if (area != null && (startRay || endRay)) {
+      return _addLinePathRayTo(
+        toPath: toPath,
+        x1: x1,
+        y1: y1,
+        x2: x2,
+        y2: y2,
+        area: area,
+        startRay: startRay,
+        endRay: endRay,
+        resultPathPoints: resultPathPoints,
+      );
+    }
     Path path = Path();
     path.moveTo(x1, y1);
     path.lineTo(x2, y2);
     toPath?.addPath(path, Offset.zero);
+    if (resultPathPoints != null) {
+      resultPathPoints.clear();
+      resultPathPoints.addAll([x1, y1, x2, y2]);
+    }
+    return toPath ?? path;
+  }
+
+  /// Creates a line path from (x1, y1) to (x2, y2).
+  /// If startRay is true, extends the line from startPosition to the border of the area.
+  /// If endRay is true, extends the line from endPosition to the border of the area.
+  static Path _addLinePathRayTo({
+    Path? toPath,
+    required double x1,
+    required double y1,
+    required double x2,
+    required double y2,
+    required Rect area,
+    required bool startRay,
+    required bool endRay,
+    List<double>? resultPathPoints,
+  }) {
+    final dx = x2 - x1;
+    final dy = y2 - y1;
+
+    // Avoid degenerate case
+    if (dx.abs() < 1e-6 && dy.abs() < 1e-6) {
+      if (resultPathPoints != null) {
+        resultPathPoints.clear();
+        resultPathPoints.addAll([x1, y1, x2, y2]);
+      }
+      return Path()..moveTo(x1, y1);
+    }
+
+    Offset startPosition = Offset(x1, y1);
+    Offset endPosition = Offset(x2, y2);
+    Offset actualStart = startPosition;
+    Offset actualEnd = endPosition;
+
+    // Find intersection with area borders if ray extension is needed
+    if (startRay || endRay) {
+      List<Offset> intersections = [];
+
+      // Left border
+      if (dx != 0) {
+        double t = (area.left - startPosition.dx) / dx;
+        double y = startPosition.dy + t * dy;
+        if (y >= area.top && y <= area.bottom) {
+          intersections.add(Offset(area.left, y));
+        }
+      }
+
+      // Right border
+      if (dx != 0) {
+        double t = (area.right - startPosition.dx) / dx;
+        double y = startPosition.dy + t * dy;
+        if (y >= area.top && y <= area.bottom) {
+          intersections.add(Offset(area.right, y));
+        }
+      }
+
+      // Top border
+      if (dy != 0) {
+        double t = (area.top - startPosition.dy) / dy;
+        double x = startPosition.dx + t * dx;
+        if (x >= area.left && x <= area.right) {
+          intersections.add(Offset(x, area.top));
+        }
+      }
+
+      // Bottom border
+      if (dy != 0) {
+        double t = (area.bottom - startPosition.dy) / dy;
+        double x = startPosition.dx + t * dx;
+        if (x >= area.left && x <= area.right) {
+          intersections.add(Offset(x, area.bottom));
+        }
+      }
+
+      // Sort intersections by distance from startPosition
+      intersections.sort(
+        (a, b) => (a - startPosition).distance.compareTo(
+          (b - startPosition).distance,
+        ),
+      );
+
+      // Extend start if startRay is true
+      if (startRay && intersections.isNotEmpty) {
+        // Find intersection in the opposite direction (t < 0)
+        for (int i = 0; i < intersections.length; i++) {
+          final intersection = intersections[i];
+          final t = dx != 0
+              ? (intersection.dx - startPosition.dx) / dx
+              : (intersection.dy - startPosition.dy) / dy;
+          if (t < 0) {
+            actualStart = intersection;
+            break;
+          }
+        }
+      }
+
+      // Extend end if endRay is true
+      if (endRay && intersections.isNotEmpty) {
+        // Find intersection in the forward direction (t > 0)
+        for (int i = intersections.length - 1; i >= 0; i--) {
+          final intersection = intersections[i];
+          final t = dx != 0
+              ? (intersection.dx - startPosition.dx) / dx
+              : (intersection.dy - startPosition.dy) / dy;
+          if (t > 0) {
+            actualEnd = intersection;
+            break;
+          }
+        }
+      }
+    }
+
+    Path path = Path();
+    path.moveTo(actualStart.dx, actualStart.dy);
+    path.lineTo(actualEnd.dx, actualEnd.dy);
+    toPath?.addPath(path, Offset.zero);
+    if (resultPathPoints != null) {
+      resultPathPoints.clear();
+      resultPathPoints.addAll([
+        actualStart.dx,
+        actualStart.dy,
+        actualEnd.dx,
+        actualEnd.dy,
+      ]);
+    }
     return toPath ?? path;
   }
 

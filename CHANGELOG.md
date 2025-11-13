@@ -1,3 +1,41 @@
+## 0.4.0
+2025-11-08
+- Add `GGraphBar`.`basePosition` property to allow customize base position of bar graph.
+- Add new graph type `GGraphStackedBar` for stacked bar graph.
+- Update workshop demo.
+- Minor bug fix.
+
+## 0.3.8
+2025-10-25
+- Add `**Notifier` getters to properties of `GComponent` to allow listen updates.
+
+## 0.3.7
+2025-10-15
+- fix scaling issue of `GValueViewPort` with logarithmic scale when panning.
+
+## 0.3.6
+2025-10-11
+- add more markers.
+  + `GArrowLineMarker` - arrow line with customizable arrow heads at start and end.
+  + `GStatsLineMarker` - statistical line marker that extends `GArrowLineMarker` with value statistics.
+  + `GCrosslineMarker` - crossline marker for marking horizontal and vertical lines.
+  + `GCalloutMarker` - callout/annotation marker with pointer.
+  + `GFibRetracementMarker` - Fibonacci retracement marker.
+  + `GFibCircleMarker` - Fibonacci circle marker.
+  + `GFibArcMarker` - Fibonacci arc marker.
+  + `GFibResistanceFanMarker` - Fibonacci resistance fan marker.
+  + `GFibTimeZoneMarker` - Fibonacci timezone marker.
+- **[breaking change]** deprecate `GArrowMarker` in favor of `GArrowLineMarker`.
+- update workshop demo to include new markers.
+
+## 0.3.5
+2025-09-18
+- sdk version up.
+- add `GValueViewPort`.`scaleType` to support logarithmic price scale.
+- add `GSvgMarker` overlay marker.
+- add screenshot.
+- minor fix.
+
 ## 0.3.4
 2025-07-26
 - add documentation link.

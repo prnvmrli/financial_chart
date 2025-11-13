@@ -2,25 +2,32 @@ name: financial_chart
 description: A chart library for financial data. supports candlestick, ohlc, line, area, bar charts and custom chart types.
 repository: https://github.com/cjjapan/financial_chart
 issue_tracker: https://github.com/cjjapan/financial_chart/issues
-homepage: https://cjjapan.github.io/financial_chart_docs/
-documentation: https://cjjapan.github.io/financial_chart_docs/
+homepage: https://cjjapan.github.io/financial_chart/
+documentation: https://cjjapan.github.io/financial_chart/
+
+screenshots:
+  - description: Stock chart
+    path: screenshots/screenshot.png
+
 topics:
   - chart
   - graph
   - candlestick
   - stock
+
 # publish_to: "none"
 
-version: 0.3.4
+version: 0.4.0
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.9.2
 
 dependencies:
   flutter:
     sdk: flutter
   equatable: ^2.0.7
   vector_math: ^2.1.4
+  flutter_svg: ^2.2.1
 
 dev_dependencies:
   flutter_test:
