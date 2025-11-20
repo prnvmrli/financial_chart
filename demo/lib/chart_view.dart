@@ -72,7 +72,11 @@ class _ChartViewState extends State<ChartView> with TickerProviderStateMixin {
                 GDataSeriesProperty(key: "high", label: "High", precision: 2),
                 GDataSeriesProperty(key: "low", label: "Low", precision: 2),
                 GDataSeriesProperty(key: "close", label: "Close", precision: 2),
-                GDataSeriesProperty(key: "volume", label: "Volume", precision: 0),
+                GDataSeriesProperty(
+                  key: "volume",
+                  label: "Volume",
+                  precision: 0,
+                ),
               ],
             );
             try {
@@ -84,7 +88,9 @@ class _ChartViewState extends State<ChartView> with TickerProviderStateMixin {
                   color: Colors.transparent,
                   type: MaterialType.transparency,
                   child: Text(
-                    kDebugMode ? 'Error building chart: $e' : 'chart is not available',
+                    kDebugMode
+                        ? 'Error building chart: $e'
+                        : 'chart is not available',
                     style: TextStyle(color: Colors.red, fontSize: 16),
                   ),
                 ),

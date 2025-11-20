@@ -1,5 +1,4 @@
-
-import 'package:charts/app.dart';
+import 'package:charts/app/local.dart';
 
 void main() {
   runTheApp();

@@ -156,7 +156,8 @@ class _MarkerItemsControlViewState extends State<MarkerItemsControlView> {
                   key: "close",
                 )!,
           ),
-          rightRay: false,
+          bottomRay: false,
+          topRay: false,
         );
         break;
       case "statsLine 1":

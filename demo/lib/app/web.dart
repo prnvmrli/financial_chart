@@ -1,6 +1,7 @@
 import 'dart:js_interop';
 import 'dart:ui_web';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../chart_view.dart';
@@ -32,9 +33,11 @@ void runTheApp() {
         final data = views.getInitialData(viewId) as ChartViewParam?;
         if (data != null) {
           // Use the initial data to set up the view.
-          print(
+          if (kDebugMode) {
+            print(
             "Chart view $viewId: ticker: ${data.ticker}, name: ${data.name}, theme: ${data.theme}, config: ${data.config}",
           );
+          }
         }
         return MaterialApp(
           title: null,
