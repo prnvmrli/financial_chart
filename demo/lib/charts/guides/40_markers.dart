@@ -5,7 +5,11 @@ GChart chartGuideMarkers(GDataSource dataSource, String themeName) {
   return GChart(
     dataSource: dataSource,
     theme: theme,
-    pointViewPort: GPointViewPort(autoScaleStrategy: GPointViewPortAutoScaleStrategyLatest(endSpacingPoints: 10)),
+    pointViewPort: GPointViewPort(
+      autoScaleStrategy: GPointViewPortAutoScaleStrategyLatest(
+        endSpacingPoints: 10,
+      ),
+    ),
     panels: [
       GPanel(
         valueViewPorts: [

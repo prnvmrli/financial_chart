@@ -19,10 +19,7 @@ GChart chartBarGraph(GDataSource dataSource, String themeName, String target) {
         pointAxes: [GPointAxis()],
         graphs: [
           GGraphGrids(),
-          GGraphBar(
-            valueKey: "close",
-            baseValue: (target == "2") ? 200 : null,
-          ),
+          GGraphBar(valueKey: "close", baseValue: (target == "2") ? 200 : null),
         ],
       ),
     ],

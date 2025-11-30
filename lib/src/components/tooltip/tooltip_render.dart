@@ -6,6 +6,7 @@ import '../components.dart';
 /// [GTooltip] renderer
 class GTooltipRender extends GRender<GTooltip, GTooltipTheme> {
   const GTooltipRender();
+
   @override
   void doRender({
     required Canvas canvas,
@@ -215,6 +216,9 @@ class GTooltipRender extends GRender<GTooltip, GTooltipTheme> {
             value.toDouble(),
           );
           anchorPosition = Offset(pointPosition, valuePosition);
+
+          /// Do this for horizontally following
+          // anchorPosition = Offset(pointPosition, area.top);
         }
       } else {
         anchorPosition = crossPosition;

@@ -36,9 +36,9 @@ class YahooFinanceCandleData {
   });
 
   factory YahooFinanceCandleData.fromJson(
-      Map<String, dynamic> json, {
-        bool adjust = false,
-      }) {
+    Map<String, dynamic> json, {
+    bool adjust = false,
+  }) {
     double adjClose = double.parse(json['adjClose'].toString());
     double close = double.parse(json['close'].toString());
     double open = double.parse(json['open'].toString());
@@ -66,8 +66,8 @@ class YahooFinanceCandleData {
 
   /// Create a list of YahooFinanceCandleData based in a json array
   static List<YahooFinanceCandleData> fromJsonList(
-      List<Map<String, dynamic>> jsonList,
-      ) {
+    List<Map<String, dynamic>> jsonList,
+  ) {
     final List<YahooFinanceCandleData> result = [];
 
     for (final Map<String, dynamic> jsonObject in jsonList) {
@@ -90,7 +90,7 @@ class YahooFinanceCandleData {
   @override
   String toString() =>
       'YahooFinanceCandleData{date: $date, adjClose: $adjClose, open: $open, '
-          'close: $close, high: $high, low: $low, volume: $volume}';
+      'close: $close, high: $high, low: $low, volume: $volume}';
 
   YahooFinanceCandleData copyWith({
     DateTime? date,
@@ -111,7 +111,6 @@ class YahooFinanceCandleData {
   );
 }
 
-
 class YahooFinanceResponse {
   YahooFinanceResponse({this.candlesData = const []});
 
@@ -119,18 +118,18 @@ class YahooFinanceResponse {
   List<YahooFinanceCandleData> candlesData = [];
 
   factory YahooFinanceResponse.fromJson(
-      Map<String, dynamic> json, {
-        bool adjust = false,
-      }) {
+    Map<String, dynamic> json, {
+    bool adjust = false,
+  }) {
     final List<YahooFinanceCandleData> data = [];
 
     final List<dynamic> timestamps = json['timestamp'] as List;
 
     final Map<String, dynamic> indicators =
-    json['indicators'] as Map<String, dynamic>;
+        json['indicators'] as Map<String, dynamic>;
     final List<dynamic> quotes = indicators['quote'] as List<dynamic>;
     final Map<String, dynamic> firstQuote =
-    quotes.first as Map<String, dynamic>;
+        quotes.first as Map<String, dynamic>;
 
     final List<dynamic> opens = firstQuote['open'] as List;
     final List<dynamic> closes = firstQuote['close'] as List;
@@ -140,7 +139,7 @@ class YahooFinanceResponse {
 
     final List<dynamic> adjClosesList = indicators['adjclose'] as List<dynamic>;
     final Map<String, dynamic> adjClosesList2 =
-    adjClosesList.first as Map<String, dynamic>;
+        adjClosesList.first as Map<String, dynamic>;
 
     final List<dynamic> adjCloses = adjClosesList2['adjclose'] as List<dynamic>;
 
@@ -195,4 +194,3 @@ class YahooFinanceResponse {
 
   List<dynamic> toCandlesJson() => candlesData.map((e) => e.toJson()).toList();
 }
-

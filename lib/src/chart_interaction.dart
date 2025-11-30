@@ -306,6 +306,8 @@ class GChartInteractionHandler with Diagnosticable {
       x: position.dx,
       y: position.dy,
       trigger: GCrosshairTrigger.longPressEnd,
+      /// TODO(Pranav): Change this when needed
+      // trigger: GCrosshairTrigger.longPressMove,
     );
     _notify();
   }

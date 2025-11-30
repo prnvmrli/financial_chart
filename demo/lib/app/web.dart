@@ -35,8 +35,8 @@ void runTheApp() {
           // Use the initial data to set up the view.
           if (kDebugMode) {
             print(
-            "Chart view $viewId: ticker: ${data.ticker}, name: ${data.name}, theme: ${data.theme}, config: ${data.config}",
-          );
+              "Chart view $viewId: ticker: ${data.ticker}, name: ${data.name}, theme: ${data.theme}, config: ${data.config}",
+            );
           }
         }
         return MaterialApp(

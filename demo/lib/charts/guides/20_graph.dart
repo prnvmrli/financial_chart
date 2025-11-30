@@ -39,7 +39,7 @@ GChart chartGuideGraph(GDataSource dataSource, String themeName) {
             // set the position of the axis to start (left side pf the graph).
             position: GAxisPosition.start,
             // disable scaling by dragging.
-            scaleMode: GAxisScaleMode.none
+            scaleMode: GAxisScaleMode.none,
           ),
         ],
         // X Axes

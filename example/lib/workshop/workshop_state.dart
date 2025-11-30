@@ -104,20 +104,20 @@ class WorkshopState extends ChangeNotifier {
           ),
         ],
         graphs: [
-          GGraphGrids(id: "g-grids", valueViewPortId: kVpPrice),
-          GGraphLine(id: "g-line", valueViewPortId: kVpPrice, valueKey: keySMA),
+          GGraphGrids(id: "g-grids", valueViewPortId: kVpPrice), // Grids
+          GGraphLine(id: "g-line", valueViewPortId: kVpPrice, valueKey: keySMA), // SMA line graph
           GGraphBar(
             id: "g-bar",
             valueViewPortId: kVpVolume,
             valueKey: keyVolume,
             baseValue: 0,
-          ),
+          ), // Volume bars
           GGraphStackedBar(
             id: "g-stacked-bar",
             visible: false,
             valueViewPortId: kVpPrice,
             valueKeys: const [keyHigh, keyOpen, keyLow],
-          ),
+          ), //
           GGraphOhlc(
             id: "g-ohlc",
             visible: true,
@@ -203,7 +203,7 @@ class WorkshopState extends ChangeNotifier {
       GPanel(
         heightWeight: 0.3,
         valueAxes: [
-          GValueAxis(viewPortId: kVpMacd, position: GAxisPosition.start),
+          // GValueAxis(viewPortId: kVpMacd, position: GAxisPosition.start),
           GValueAxis(viewPortId: kVpMacd, position: GAxisPosition.end),
         ],
         pointAxes: [GPointAxis(position: GAxisPosition.end)],

@@ -1,5 +1,3 @@
-
-
 part of "../charts.dart";
 
 GChart chartGuideStart(GDataSource dataSource, String themeName) {

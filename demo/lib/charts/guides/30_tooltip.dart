@@ -39,7 +39,7 @@ GChart chartGuideTooltip(GDataSource dataSource, String themeName) {
             // set the position of the axis to start (left side pf the graph).
             position: GAxisPosition.start,
             // disable scaling by dragging.
-            scaleMode: GAxisScaleMode.none
+            scaleMode: GAxisScaleMode.none,
           ),
         ],
         // X Axes
@@ -58,13 +58,7 @@ GChart chartGuideTooltip(GDataSource dataSource, String themeName) {
           followValueKey: "close",
           followValueViewPortId: "",
           // set the values to be displayed in the tooltip.
-          dataKeys: [
-            "open",
-            "high",
-            "low",
-            "close",
-            "volume",
-          ],
+          dataKeys: ["open", "high", "low", "close", "volume"],
         ),
       ),
     ],
