@@ -12,6 +12,7 @@ class WorkshopState extends ChangeNotifier {
   final ValueNotifier<ThemeMode> themeMode;
   final GlobalKey<State<StatefulWidget>> workshopViewKey =
       GlobalKey<State<StatefulWidget>>();
+
   WorkshopState({required this.themeMode});
 
   String ticker = 'AAPL';
@@ -104,20 +105,24 @@ class WorkshopState extends ChangeNotifier {
           ),
         ],
         graphs: [
-          GGraphGrids(id: "g-grids", valueViewPortId: kVpPrice), // Grids
-          GGraphLine(id: "g-line", valueViewPortId: kVpPrice, valueKey: keySMA), // SMA line graph
+          GGraphGrids(id: "g-grids", valueViewPortId: kVpPrice),
+          // Grids
+          GGraphLine(id: "g-line", valueViewPortId: kVpPrice, valueKey: keySMA),
+          // SMA line graph
           GGraphBar(
             id: "g-bar",
             valueViewPortId: kVpVolume,
             valueKey: keyVolume,
             baseValue: 0,
-          ), // Volume bars
+          ),
+          // Volume bars
           GGraphStackedBar(
             id: "g-stacked-bar",
             visible: false,
             valueViewPortId: kVpPrice,
             valueKeys: const [keyHigh, keyOpen, keyLow],
-          ), //
+          ),
+          //
           GGraphOhlc(
             id: "g-ohlc",
             visible: true,
