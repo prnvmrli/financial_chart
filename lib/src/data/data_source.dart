@@ -17,10 +17,18 @@ class GData<P> extends Equatable {
   const GData({required this.pointValue, required this.seriesValues});
 
   double operator [](int index) => seriesValues[index];
+
   void operator []=(int index, double value) => seriesValues[index] = value;
 
   @override
   List<Object?> get props => [pointValue, seriesValues];
+
+  GData<P> copyWith({P? pointValue, List<double>? seriesValues}) {
+    return GData(
+      pointValue: pointValue ?? this.pointValue,
+      seriesValues: seriesValues ?? this.seriesValues,
+    );
+  }
 }
 
 /// Property of a series.
@@ -71,6 +79,7 @@ class GDataSource<P, D extends GData<P>> extends ChangeNotifier
   ///
   /// Use point instead of index to access data so we can append data to both ends dynamically without breaking data access.
   final GValue<int> _basePoint = GValue<int>(0);
+
   int get basePoint => _basePoint.value;
 
   final GValue<int> _minPoint = GValue<int>(-100000000);
@@ -80,6 +89,7 @@ class GDataSource<P, D extends GData<P>> extends ChangeNotifier
   final int dataLoadMargin;
 
   final GValue<bool> _isLoading = GValue<bool>(false);
+
   bool get isLoading => _isLoading.value;
 
   /// The data list.
@@ -113,9 +123,13 @@ class GDataSource<P, D extends GData<P>> extends ChangeNotifier
        );
 
   bool get isEmpty => dataList.isEmpty;
+
   bool get isNotEmpty => dataList.isNotEmpty;
+
   int get firstPoint => indexToPoint(0);
+
   int get lastPoint => indexToPoint(dataList.length - 1);
+
   int get length => dataList.length;
 
   /// Convert point to index in data list.
