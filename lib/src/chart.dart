@@ -15,7 +15,9 @@ import 'values/value.dart';
 class DebounceHelper {
   final int milliseconds;
   Timer? _timer;
+
   DebounceHelper({required this.milliseconds});
+
   void run(VoidCallback action) {
     if (_timer != null) {
       _timer!.cancel();
@@ -46,6 +48,7 @@ class GChart extends ChangeNotifier with Diagnosticable {
 
   /// The action mode for pointer scroll event.
   final GValue<GPointerScrollMode> _pointerScrollMode;
+
   set pointerScrollMode(GPointerScrollMode value) {
     _pointerScrollMode.value = value;
     _notify();
@@ -76,6 +79,7 @@ class GChart extends ChangeNotifier with Diagnosticable {
 
   /// The current theme of the chart.
   GTheme get theme => _theme.value;
+
   set theme(GTheme value) {
     _theme.value = value;
     _notify();
@@ -116,8 +120,13 @@ class GChart extends ChangeNotifier with Diagnosticable {
     SystemMouseCursors.basic,
   );
 
+  GPanel? findPanelByID(String id) =>
+      panels.firstWhere((panel) => panel.id == id);
+
   final GValue<bool> _hitTestEnable;
+
   bool get hitTestEnable => _hitTestEnable.value;
+
   set hitTestEnable(bool value) {
     _hitTestEnable.value = value;
     _notify();
@@ -126,6 +135,7 @@ class GChart extends ChangeNotifier with Diagnosticable {
   final _debounceHelper = DebounceHelper(milliseconds: 500);
 
   bool _initialized = false;
+
   bool get initialized => _initialized;
   TickerProvider? _tickerProvider;
 
