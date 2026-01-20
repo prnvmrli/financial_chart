@@ -40,6 +40,7 @@ class GChartWidget extends StatefulWidget {
   final PointerDownEventListener? onPointerDown;
   final PointerUpEventListener? onPointerUp;
   final Set<PointerDeviceKind>? supportedDevices;
+
   const GChartWidget({
     super.key,
     required this.chart,
@@ -63,6 +64,7 @@ class GChartWidget extends StatefulWidget {
 
 class GChartWidgetState extends State<GChartWidget> {
   GChartWidgetState();
+
   MouseCursor cursor = SystemMouseCursors.basic;
   late GChartInteractionHandler _interactionHandler;
 
@@ -288,6 +290,7 @@ class _TooltipSingleChildLayoutDelegate extends SingleChildLayoutDelegate {
 
 class GChartPainter extends CustomPainter {
   final GChart chart;
+
   GChartPainter({required this.chart}) : super(repaint: chart);
 
   @override
