@@ -107,6 +107,7 @@ class GChartWidgetState extends State<GChartWidget> {
   Widget build(BuildContext context) {
     final chart = widget.chart;
     final controller = _interactionHandler;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         Size viewSize = MediaQuery.of(context).size;
@@ -121,6 +122,7 @@ class GChartWidgetState extends State<GChartWidget> {
               : constraints.maxHeight,
         );
         chart.resize(newArea: rect);
+
         return Stack(
           children: [
             RawGestureDetector(
@@ -185,6 +187,7 @@ class GChartWidgetState extends State<GChartWidget> {
                 if (widget.chart.dataSource.dataList.isEmpty) {
                   return widget.noDataWidgetBuilder(context, widget.chart);
                 }
+
                 return const SizedBox.shrink();
               },
             ),
