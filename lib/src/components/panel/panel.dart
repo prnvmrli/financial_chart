@@ -44,25 +44,33 @@ class GPanel extends GComponent {
   ///
   /// A resize handle will be shown at the middle of two panels when both are resizable.
   final GValue<bool> _resizable = GValue(true);
+
   bool get resizable => _resizable.value && visible;
+
   set resizable(bool value) => _resizable.value = value;
 
   /// The height weight of the panel. height will be chart.height * [_heightWeight].
   final GValue<double> _heightWeight = GValue(1.0);
+
   double get heightWeight => _heightWeight.value;
+
   set heightWeight(double value) => _heightWeight.value = value;
 
   /// The speed of the momentum scrolling.
   ///
   /// A value between 0 and 1.0, larger value means faster scrolling, 0 to disable.
   final GValue<double> _momentumScrollSpeed = GValue(0.5);
+
   double get momentumScrollSpeed => _momentumScrollSpeed.value;
+
   set momentumScrollSpeed(double value) =>
       _momentumScrollSpeed.value = min(max(value, 0), 1.0);
 
   /// The action mode when panning the graph area of the panel.
   final GValue<GGraphPanMode> _graphPanMode = GValue(GGraphPanMode.auto);
+
   GGraphPanMode get graphPanMode => _graphPanMode.value;
+
   set graphPanMode(GGraphPanMode value) => _graphPanMode.value = value;
 
   @override
@@ -81,10 +89,12 @@ class GPanel extends GComponent {
 
   /// The render area of the point axis at [index] of [pointAxes].
   Rect pointAxisArea(int index) => _areas[index];
+
   Rect pointAxisAreaOf(GPointAxis axis) => _areas[pointAxes.indexOf(axis)];
 
   /// The render area of the value axis at [index] of [valueAxes].
   Rect valueAxisArea(int index) => _areas[pointAxes.length + index];
+
   Rect valueAxisAreaOf(GValueAxis axis) =>
       _areas[pointAxes.length + valueAxes.indexOf(axis)];
 
@@ -104,13 +114,17 @@ class GPanel extends GComponent {
   ///
   /// NOTICE that when [onDoubleTapGraphArea] also being set there is a delay cause by distinguishing single from double taps
   final GValue<Function(Offset)?> _onTapGraphArea = GValue(null);
+
   Function(Offset)? get onTapGraphArea => _onTapGraphArea.value;
+
   set onTapGraphArea(Function(Offset)? value) => _onTapGraphArea.value = value;
 
   /// The callback function when secondary tap (up) the graph area.
   final GValue<Function(Offset)?> _onSecondaryTapGraphArea = GValue(null);
+
   Function(Offset)? get onSecondaryTapGraphArea =>
       _onSecondaryTapGraphArea.value;
+
   set onSecondaryTapGraphArea(Function(Offset)? value) =>
       _onSecondaryTapGraphArea.value = value;
 
@@ -118,28 +132,36 @@ class GPanel extends GComponent {
   ///
   /// NOTICE that when this being set it will cause a delay on [onTapGraphArea] for distinguishing single from double taps
   final GValue<Function(Offset)?> _onDoubleTapGraphArea = GValue(null);
+
   Function(Offset)? get onDoubleTapGraphArea => _onDoubleTapGraphArea.value;
+
   set onDoubleTapGraphArea(Function(Offset)? value) =>
       _onDoubleTapGraphArea.value = value;
 
   /// The callback function when long press down the graph area.
   final GValue<Function(Offset)?> _onLongPressStartGraphArea = GValue(null);
+
   Function(Offset)? get onLongPressStartGraphArea =>
       _onLongPressStartGraphArea.value;
+
   set onLongPressStartGraphArea(Function(Offset)? value) =>
       _onLongPressStartGraphArea.value = value;
 
   /// The callback function when long press up the graph area.
   final GValue<Function(Offset)?> _onLongPressEndGraphArea = GValue(null);
+
   Function(Offset)? get onLongPressEndGraphArea =>
       _onLongPressEndGraphArea.value;
+
   set onLongPressEndGraphArea(Function(Offset)? value) =>
       _onLongPressEndGraphArea.value = value;
 
   /// The callback function when long press move the graph area.
   final GValue<Function(Offset)?> _onLongPressMoveGraphArea = GValue(null);
+
   Function(Offset)? get onLongPressMoveGraphArea =>
       _onLongPressMoveGraphArea.value;
+
   set onLongPressMoveGraphArea(Function(Offset)? value) =>
       _onLongPressMoveGraphArea.value = value;
 
@@ -239,6 +261,10 @@ class GPanel extends GComponent {
 
   GGraph? findGraphById(String id) {
     return graphs.where((element) => element.id == id).firstOrNull;
+  }
+
+  GValueAxis? findValueAxisById(String id) {
+    return valueAxes.where((element) => element.id == id).firstOrNull;
   }
 
   (GGraph?, GOverlayMarker? marker) hitTestGraphs({required Offset position}) {

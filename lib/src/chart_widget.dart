@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:financial_chart/financial_chart.dart';
+import 'package:financial_chart/src/markers/crossline/marker_handle.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -158,6 +160,31 @@ class GChartWidgetState extends State<GChartWidget> {
                   widget.onPointerUp?.call(details);
                 },
               ),
+            ),
+            ...widget.chart.panels.expand(
+              (panel) => panel.graphs.map((graph) {
+                return ValueListenableBuilder<Map<String, GMarkerHandle>?>(
+                  valueListenable: graph.handles,
+                  builder: (context, value, _) {
+                    if (value == null) return SizedBox();
+
+                    return Stack(
+                      children: value.entries.map((e) {
+                        return CustomSingleChildLayout(
+                          delegate: _TooltipSingleChildLayoutDelegate(
+                            offset: Offset(
+                              widget.chart.area.center.dx,
+                              (e.value.pos?.dy ?? 0) - 15,
+                            ),
+                            area: widget.chart.area,
+                          ),
+                          child: e.value.handleBuilder(context),
+                        );
+                      }).toList(),
+                    );
+                  },
+                );
+              }),
             ),
             ListenableBuilder(
               listenable: widget.chart.mouseCursor,

@@ -1,5 +1,5 @@
-import 'dart:ui';
-
+import 'package:financial_chart/src/markers/crossline/marker_handle.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:vector_math/vector_math.dart';
 
 import '../../chart.dart';
@@ -13,7 +13,10 @@ import '../render.dart';
 /// Base class for [GGraph] renderers.
 class GGraphRender<C extends GGraph, T extends GGraphTheme>
     extends GRender<C, T> {
-  const GGraphRender();
+  final ValueNotifier<Map<String, GMarkerHandle>>? handles;
+
+  const GGraphRender({this.handles});
+
   @override
   void render({
     required Canvas canvas,
@@ -118,6 +121,7 @@ class GGraphRender<C extends GGraph, T extends GGraphTheme>
           panel: panel,
           component: graph,
           marker: marker,
+          handles: handles,
           area: panel.graphArea(),
           theme:
               (marker.theme ??

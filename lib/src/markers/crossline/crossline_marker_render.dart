@@ -12,6 +12,8 @@ import 'crossline_marker.dart';
 
 class GCrosslineMarkerRender
     extends GOverlayMarkerRender<GCrosslineMarker, GOverlayMarkerTheme> {
+  GCrosslineMarkerRender({super.handle});
+
   @override
   void doRenderMarker({
     required Canvas canvas,

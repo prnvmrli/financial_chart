@@ -24,7 +24,7 @@ abstract class GOverlayMarkerRender<
   T extends GOverlayMarkerTheme
 >
     extends GMarkerRender<M, T> {
-  GOverlayMarkerRender();
+  GOverlayMarkerRender({super.handle});
 
   Map<String, GControlHandle> controlHandles = {};
 

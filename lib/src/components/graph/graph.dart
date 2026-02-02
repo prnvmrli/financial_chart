@@ -1,14 +1,8 @@
 import 'dart:ui';
 
+import 'package:financial_chart/financial_chart.dart';
+import 'package:financial_chart/src/markers/crossline/marker_handle.dart';
 import 'package:flutter/foundation.dart';
-
-import '../marker/overlay_marker.dart';
-import '../render.dart';
-import 'graph_render.dart';
-import 'graph_theme.dart';
-import '../component.dart';
-import '../panel/panel.dart';
-import '../viewport_v.dart';
 
 /// Base class for graph components.
 ///
@@ -29,6 +23,8 @@ class GGraph<T extends GGraphTheme> extends GComponent {
   /// The graph markers of the graph.
   List<GOverlayMarker> get overlayMarkers => List.unmodifiable(_overlayMarkers);
   final List<GOverlayMarker> _overlayMarkers = [];
+
+  final ValueNotifier<Map<String, GMarkerHandle>> handles = ValueNotifier({});
 
   GGraph({
     super.id,
@@ -57,6 +53,10 @@ class GGraph<T extends GGraphTheme> extends GComponent {
   }
 
   GOverlayMarker? removeMarkerById(String id) {
+    // Notify handles list
+    final hdls = {...handles.value};
+    hdls.remove(id);
+    handles.value = hdls;
     final marker = findMarker(id);
     if (marker != null) {
       _overlayMarkers.remove(marker);
@@ -66,6 +66,9 @@ class GGraph<T extends GGraphTheme> extends GComponent {
   }
 
   bool removeMarker(GOverlayMarker marker) {
+    final hdls = {...handles.value};
+    hdls.remove(marker.id);
+    handles.value = hdls;
     return _overlayMarkers.remove(marker);
   }
 
@@ -74,10 +77,12 @@ class GGraph<T extends GGraphTheme> extends GComponent {
   }
 
   void clearMarkers() {
+    handles.value = {};
     _overlayMarkers.clear();
   }
 
   GOverlayMarker? hitTestOverlayMarkers({required Offset position}) {
+    // Use this for marker config and drag functionality
     for (final marker in _overlayMarkers) {
       if (marker.visible && marker.hitTest(position: position)) {
         return marker;
@@ -88,7 +93,7 @@ class GGraph<T extends GGraphTheme> extends GComponent {
 
   @override
   GRender getRender() {
-    return render ?? const GGraphRender();
+    return render ?? GGraphRender(handles: handles);
   }
 
   String get type => typeName;

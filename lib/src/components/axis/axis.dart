@@ -51,19 +51,25 @@ abstract class GAxis extends GComponent {
   ///
   /// see [GAxisPosition] for more details.
   final GValue<GAxisPosition> _position;
+
   GAxisPosition get position => _position.value;
+
   set position(GAxisPosition value) => _position.value = value;
 
   /// The size of the axis in pixels.
   final GValue<double> _size;
+
   double get size => _size.value;
+
   set size(double value) => _size.value = value;
 
   /// The scale mode when drags the axis interactively.
   ///
   /// see [GAxisScaleMode] for more details.
   final GValue<GAxisScaleMode> _scaleMode;
+
   GAxisScaleMode get scaleMode => _scaleMode.value;
+
   set scaleMode(GAxisScaleMode value) => _scaleMode.value = value;
 
   /// Axis markers
@@ -181,8 +187,21 @@ class GValueAxis extends GAxis {
 
   bool get isAlignRight =>
       position == GAxisPosition.start || position == GAxisPosition.endInside;
+
   bool get isAlignLeft =>
       position == GAxisPosition.end || position == GAxisPosition.startInside;
+
+  void addMarker(GAxisMarker marker) {
+    axisMarkers.add(marker);
+  }
+
+  void removeMarkerById(String id) {
+    axisMarkers.removeWhere((element) => element.id == id);
+  }
+
+  GAxisMarker? findMarkerById(String id) {
+    return axisMarkers.where((element) => element.id == id).firstOrNull;
+  }
 
   /// place the axis to the given [area] and return the areas of the axis ([areaAxis]) and the area left ([areaLeft]).
   @override
@@ -231,6 +250,7 @@ class GPointAxis extends GAxis {
 
   /// The formatter to format the point value.
   final String Function(int, dynamic)? pointFormatter;
+
   GPointAxis({
     super.id,
     super.position = GAxisPosition.end,
@@ -246,6 +266,7 @@ class GPointAxis extends GAxis {
 
   bool get isAlignBottom =>
       position == GAxisPosition.start || position == GAxisPosition.endInside;
+
   bool get isAlignTop =>
       position == GAxisPosition.end || position == GAxisPosition.startInside;
 

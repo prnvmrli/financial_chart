@@ -121,7 +121,7 @@ class GChart extends ChangeNotifier with Diagnosticable {
   );
 
   GPanel? findPanelByID(String id) =>
-      panels.firstWhere((panel) => panel.id == id);
+      panels.where((panel) => panel.id == id).firstOrNull;
 
   final GValue<bool> _hitTestEnable;
 

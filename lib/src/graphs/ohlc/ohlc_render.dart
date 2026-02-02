@@ -14,7 +14,8 @@ import 'ohlc.dart';
 import 'ohlc_theme.dart';
 
 class GGraphOhlcRender extends GGraphRender<GGraphOhlc, GGraphOhlcTheme> {
-  GGraphOhlcRender();
+  GGraphOhlcRender({super.handles});
+
   @override
   void doRenderGraph({
     required Canvas canvas,

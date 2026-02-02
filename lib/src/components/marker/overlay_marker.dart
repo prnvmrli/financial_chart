@@ -13,8 +13,10 @@ abstract class GOverlayMarker extends GMarker {
 
   final GValue<GOverlayMarkerScaleHandler<GOverlayMarker>?> _scaleHandler =
       GValue<GOverlayMarkerScaleHandler<GOverlayMarker>?>(null);
+
   GOverlayMarkerScaleHandler<GOverlayMarker>? get scaleHandler =>
       _scaleHandler.value;
+
   set scaleHandler(GOverlayMarkerScaleHandler<GOverlayMarker>? value) {
     _scaleHandler.value = value;
   }

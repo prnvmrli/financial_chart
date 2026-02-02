@@ -24,3 +24,5 @@ export 'src/chart_render.dart';
 
 export 'src/chart_widget.dart';
 export 'src/vector/vectors.dart';
+
+export 'src/markers/crossline/order_line_marker_handle.dart';

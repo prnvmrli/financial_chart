@@ -40,7 +40,7 @@ class GGraphOhlc<T extends GGraphTheme> extends GGraph<T> {
       "The length of ohlcValueKeys must be 4.",
     );
     super.theme = theme;
-    super.render = render ?? GGraphOhlcRender();
+    super.render = render ?? GGraphOhlcRender(handles: super.handles);
   }
 
   @override

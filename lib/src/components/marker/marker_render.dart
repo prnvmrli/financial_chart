@@ -1,13 +1,6 @@
-import 'dart:ui';
-
-import '../../chart.dart';
-import '../component.dart';
-import '../panel/panel.dart';
-import '../render.dart';
-import 'marker.dart';
-import 'marker_theme.dart';
-import '../viewport_v.dart';
-import '../viewport_h.dart';
+import 'package:financial_chart/financial_chart.dart';
+import 'package:financial_chart/src/markers/crossline/marker_handle.dart';
+import 'package:flutter/material.dart';
 
 /// Base class for rendering a [GMarker].
 ///
@@ -15,7 +8,9 @@ import '../viewport_h.dart';
 /// use [GMarkerRender.renderMarker] instead of super [GRender.render] to render a [GMarker].
 abstract class GMarkerRender<M extends GMarker, T extends GMarkerTheme>
     extends GRender<M, T> {
-  const GMarkerRender();
+  final GMarkerHandle? handle;
+
+  const GMarkerRender({this.handle});
 
   void renderMarker({
     required Canvas canvas,
@@ -26,6 +21,7 @@ abstract class GMarkerRender<M extends GMarker, T extends GMarkerTheme>
     required Rect area,
     required T theme,
     GValueViewPort? valueViewPort,
+    ValueNotifier<Map<String, GMarkerHandle>>? handles,
   }) {
     if (!component.visible || !marker.visible) {
       return;
@@ -38,6 +34,29 @@ abstract class GMarkerRender<M extends GMarker, T extends GMarkerTheme>
     if (!validValueViewPort.isValid) {
       return;
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (marker is GCrosslineMarker) {
+        final anchorPos = marker.anchor.toPosition(
+          area: area,
+          valueViewPort: validValueViewPort,
+          pointViewPort: pointViewPort,
+        );
+
+        if (area.top > (anchorPos.dy - 15) ||
+            area.bottom < (anchorPos.dy + 15)) {
+          final hdls = {...?handles?.value};
+          hdls.remove(marker.id);
+          handles?.value = hdls;
+        } else {
+          handles?.value = {
+            ...handles.value,
+            ?marker.id: ?handle?.updatePos(pos: anchorPos),
+          };
+        }
+      }
+    });
+
     renderClipped(
       canvas: canvas,
       clipRect: area,
