@@ -221,6 +221,10 @@ class GChart extends ChangeNotifier with Diagnosticable {
     resize(newArea: area, force: true);
   }
 
+  void removePanelById(String id) {
+    panels.removeWhere((element) => element.id == id);
+  }
+
   /// Load initial data when there is no data in [dataSource].
   ///
   /// Should called only once right after the chart widget is initialized.
